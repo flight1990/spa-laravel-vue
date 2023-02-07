@@ -17,5 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::controller(PassportController::class)->group(function () {
     Route::get('user', 'user')->middleware('auth:api');
     Route::post('login', 'login');
+    Route::post('register', 'register');
     Route::post('logout', 'logout')->middleware('auth:api');
 });

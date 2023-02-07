@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class PassportController extends Controller
 {
@@ -12,21 +14,28 @@ class PassportController extends Controller
         return auth()->user();
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $data = $request->validate([
-            'email' => 'email|required',
-            'password' => 'required'
-        ]);
+        $payload = $request->validated();
 
-        if (!auth()->attempt($data)) {
-            return response(['error_message' => 'Incorrect Details.
-            Please try again']);
+        if (!auth()->attempt($payload)) {
+            return response(['errors' => ['password' => ['Credentials does not match']]], 401);
         }
 
         $token = auth()->user()->createToken('API Token')->accessToken;
 
-        return response(['user' => auth()->user(),  'token' => $token]);
+        return response(['token' => $token]);
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        $payload = $request->validated();
+        $payload['password'] = bcrypt($payload['password']);
+
+        $user = User::create($payload);
+        $token = $user->createToken('API Token')->accessToken;
+
+        return response(['token' => $token]);
     }
 
     public function logout()

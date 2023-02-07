@@ -1,9 +1,12 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import store from '@/store'
 
-const Login = () => import('@/auth/Login.vue');
-const UsersIndex = () => import('@/users/Index.vue');
+const Login = () => import('@/pages/auth/Login.vue');
+const Register = () => import('@/pages/auth/Register.vue');
+
+
 const Layout = () => import('@/layouts/Default.vue');
+const UsersIndex = () => import('@/pages/users/Index.vue');
 
 const routes = [
     {
@@ -13,6 +16,15 @@ const routes = [
         meta: {
             middleware: "guest",
             title: `Login`
+        }
+    },
+    {
+        name: "register",
+        path: "/register",
+        component: Register,
+        meta: {
+            middleware: "guest",
+            title: `Register`
         }
     },
     {

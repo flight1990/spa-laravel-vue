@@ -1,6 +1,8 @@
 <template>
 
 
+    {{ user.name }}
+
     <button @click="logout">Logout</button>
 
     <router-view></router-view>
@@ -13,9 +15,7 @@ import {mapActions, mapGetters} from "vuex";
 export default {
     name: "Default",
     computed: {
-        ...mapGetters(
-            {token: "auth/token", user: "auth/user"}
-        )
+        ...mapGetters({token: "auth/token", user: "auth/user"})
     },
     methods: {
         ...mapActions(
@@ -26,7 +26,6 @@ export default {
                 this.signOut()
             })
         },
-
     }
 }
 </script>
