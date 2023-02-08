@@ -10,7 +10,9 @@
         "laravel/framework": "^9.19",
         "laravel/passport": "^11.6",
         "laravel/sanctum": "^3.0",
-        "laravel/tinker": "^2.7"
+        "laravel/scout": "^9.8",
+        "laravel/tinker": "^2.7",
+        "propaganistas/laravel-phone": "^5.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

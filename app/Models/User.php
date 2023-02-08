@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -9,7 +10,18 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, Searchable;
+
+    #[SearchUsingPrefix(['id', 'name', 'email', 'phone'])]
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone
+        ];
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +32,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'banned_at',
+        'phone'
     ];
 
     /**
@@ -39,5 +53,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'banned_at' => 'datetime'
     ];
 }

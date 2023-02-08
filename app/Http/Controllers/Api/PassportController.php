@@ -22,6 +22,10 @@ class PassportController extends Controller
             return response(['errors' => ['password' => ['Credentials does not match']]], 401);
         }
 
+        if (!empty(auth()->user()->banned_at)) {
+            return response(['errors' => ['password' => ['Your account is blocked']]], 403);
+        }
+
         $token = auth()->user()->createToken('API Token')->accessToken;
 
         return response(['token' => $token]);

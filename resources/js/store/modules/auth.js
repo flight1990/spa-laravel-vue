@@ -25,8 +25,16 @@ export default {
     actions: {
 
         checkAuth({state, dispatch, commit}) {
-            axios.get('api/user', {headers: {'Authorization': 'Bearer ' + state.token}}).then(response => {
+
+            const config = {
+                headers: {
+                    'Authorization' : 'Bearer ' + state.token
+                }
+            }
+
+            axios.get('/api/user', config).then(response => {
                 let user = response.data
+
                 localStorage.setItem('user', JSON.stringify(user))
                 commit('setUser', user)
             }).catch(() => {

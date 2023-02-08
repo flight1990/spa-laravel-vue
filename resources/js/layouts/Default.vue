@@ -1,11 +1,35 @@
 <template>
 
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
 
-    {{ user.name }}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-    <button @click="logout">Logout</button>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{name: 'users.index'}">User</router-link>
+                    </li>
+                    <li class="nav-item dropdown" v-if="user">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ user.name }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" @click="logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
 
-    <router-view></router-view>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <router-view></router-view>
+    </div>
+
 </template>
 
 <script>
@@ -19,10 +43,15 @@ export default {
     },
     methods: {
         ...mapActions(
-                {signOut: "auth/signOut"},
+            {signOut: "auth/signOut"},
         ),
         logout() {
-            axios.post('api/logout', {}, {headers: {'Authorization': 'Bearer ' + this.token}}).then(response => {
+
+            const config = {
+                headers: {'Authorization': 'Bearer ' + this.token}
+            }
+
+            axios.post('/api/logout', {}, config).then(() => {
                 this.signOut()
             })
         },
