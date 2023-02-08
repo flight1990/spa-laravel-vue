@@ -18,6 +18,12 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="text" class="form-control" id="phone" v-model="form.phone" @focus="validationErrors.phone = []">
+                    <small class="text-danger" v-if="validationErrors.phone">{{ validationErrors.phone[0] }}</small>
+                </div>
+
+                <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" v-model="form.password" @focus="validationErrors.password = []">
                     <small class="text-danger" v-if="validationErrors.password">{{ validationErrors.password[0] }}</small>
@@ -27,6 +33,16 @@
                     <label for="password_confirmation" class="form-label">Password confirmation</label>
                     <input type="password" class="form-control" id="password_confirmation" v-model="form.password_confirmation" @focus="validationErrors.password_confirmation = []">
                     <small class="text-danger" v-if="validationErrors.password_confirmation">{{ validationErrors.password_confirmation[0] }}</small>
+                </div>
+
+                <div class="mb-3">
+                    <VueRecaptcha
+                        sitekey="6LdsiGEkAAAAALSqmswnH0_ckW9feK3ogl4UZ9Ru"
+                        :load-recaptcha-script="true"
+                        @verify="onCaptchaVerified"
+
+                    ></VueRecaptcha>
+                    <small class="text-danger" v-if="validationErrors.recaptcha">{{ validationErrors.recaptcha[0] }}</small>
                 </div>
 
                 <button type="submit" class="btn btn-primary" :disabled="processing">Register</button>
@@ -40,9 +56,13 @@
 <script>
 
 import {mapActions} from "vuex";
+import { VueRecaptcha } from 'vue-recaptcha';
 
 export default {
     name: "Register",
+    components: {
+        VueRecaptcha
+    },
     data() {
         return {
             validationErrors: {},
@@ -50,6 +70,7 @@ export default {
             form: {
                 name: "",
                 email: "",
+                phone: "",
                 password: "",
                 password_confirmation: ""
             }
@@ -59,6 +80,11 @@ export default {
         ...mapActions({
             signIn: "auth/signIn"
         }),
+        onCaptchaVerified(recaptchaToken) {
+            this.form.recaptcha = recaptchaToken
+            this.validateCaptcha = true
+            this.validationErrors.recaptcha = []
+        },
         register() {
             this.processing = true
             axios.post('/api/register', this.form).then(resposne => {

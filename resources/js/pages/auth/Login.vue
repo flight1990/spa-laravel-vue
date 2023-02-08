@@ -18,6 +18,16 @@
                     <small class="text-danger" v-if="validationErrors.password">{{ validationErrors.password[0] }}</small>
                 </div>
 
+                <div class="mb-3">
+                    <VueRecaptcha
+                        sitekey="6LdsiGEkAAAAALSqmswnH0_ckW9feK3ogl4UZ9Ru"
+                        :load-recaptcha-script="true"
+                        @verify="onCaptchaVerified"
+
+                    ></VueRecaptcha>
+                    <small class="text-danger" v-if="validationErrors.recaptcha">{{ validationErrors.recaptcha[0] }}</small>
+                </div>
+
                 <button type="submit" class="btn btn-primary" :disabled="processing">Login</button>
                 <router-link :to="{name: 'register'}" class="ms-3">Don't have an account?</router-link>
 
@@ -30,16 +40,21 @@
 <script>
 
 import {mapActions} from "vuex";
+import { VueRecaptcha } from 'vue-recaptcha';
 
 export default {
     name: "Login",
+    components: {
+        VueRecaptcha
+    },
     data() {
         return {
             validationErrors: {},
             processing: false,
             form: {
                 email: "",
-                password: ""
+                password: "",
+                recaptcha: ""
             }
         }
     },
@@ -47,6 +62,11 @@ export default {
         ...mapActions({
             signIn: "auth/signIn"
         }),
+        onCaptchaVerified(recaptchaToken) {
+            this.form.recaptcha = recaptchaToken
+            this.validateCaptcha = true
+            this.validationErrors.recaptcha = []
+        },
         login() {
             this.processing = true
             axios.post('/api/login', this.form).then(resposne => {

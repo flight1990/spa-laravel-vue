@@ -33,7 +33,8 @@ class User extends Authenticatable
         'email',
         'password',
         'banned_at',
-        'phone'
+        'phone',
+        'recaptcha'
     ];
 
     /**

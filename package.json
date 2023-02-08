@@ -17,6 +17,7 @@
         "bootstrap": "^5.2.3",
         "vue": "^3.2.36",
         "vue-loader": "^17.0.1",
+        "vue-recaptcha": "^2.0.3",
         "vue-router": "^4.1.6",
         "vuex": "^4.1.0"
     }
