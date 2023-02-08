@@ -43,7 +43,7 @@ export default {
     },
     methods: {
         ...mapActions(
-            {signOut: "auth/signOut"},
+            {signOut: "auth/signOut", deleteUserOtp: "otp/deleteUserOtp"},
         ),
         logout() {
 
@@ -52,6 +52,7 @@ export default {
             }
 
             axios.post('/api/logout', {}, config).then(() => {
+                this.deleteUserOtp()
                 this.signOut()
             })
         },

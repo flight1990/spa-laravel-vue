@@ -3,6 +3,8 @@ import store from '@/store'
 
 const Login = () => import('@/pages/auth/Login.vue');
 const Register = () => import('@/pages/auth/Register.vue');
+const GenerateOTP = () => import('@/pages/auth/otp/GenerateOTP.vue');
+const LoginOTP = () => import('@/pages/auth/otp/LoginOTP.vue');
 
 const Layout = () => import('@/layouts/Default.vue');
 const UsersIndex = () => import('@/pages/users/Index.vue');
@@ -17,6 +19,24 @@ const routes = [
         meta: {
             middleware: "guest",
             title: `Login`
+        }
+    },
+    {
+        name: "otp.generate",
+        path: "/otp/generate",
+        component: GenerateOTP,
+        meta: {
+            middleware: "guest",
+            title: `OTP Generate`
+        }
+    },
+    {
+        name: "otp.login",
+        path: "/otp/login",
+        component: LoginOTP,
+        meta: {
+            middleware: "guest",
+            title: `OTP Login`
         }
     },
     {
@@ -66,7 +86,6 @@ const routes = [
 
                 }
             }
-
         ],
     }
 ];
@@ -75,7 +94,6 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
 })
-
 
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title

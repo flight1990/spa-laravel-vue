@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\OtpController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PassportController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,11 @@ Route::controller(PassportController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
     Route::post('logout', 'logout')->middleware('auth:api');
+});
+
+Route::controller(OtpController::class)->prefix('otp')->group(function () {
+    Route::post('generate', 'generate');
+    Route::post('login', 'login');
 });
 
 Route::controller(UserController::class)->prefix('users')->middleware('auth:api')->group(function () {

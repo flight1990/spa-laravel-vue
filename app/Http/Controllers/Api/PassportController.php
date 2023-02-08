@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\UserOtp;
 use App\Models\User;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
@@ -44,8 +45,11 @@ class PassportController extends Controller
 
     public function logout()
     {
-        $user = auth()->user()->token();
-        $user->revoke();
+        $user = auth()->user();
+
+        UserOtp::where('user_id', $user->id)->delete();
+
+        $user->token()->revoke();
 
         return response('logged out');
     }

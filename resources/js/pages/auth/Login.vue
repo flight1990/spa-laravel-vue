@@ -19,6 +19,7 @@
                 </div>
 
                 <div class="mb-3">
+
                     <VueRecaptcha
                         sitekey="6LdsiGEkAAAAALSqmswnH0_ckW9feK3ogl4UZ9Ru"
                         :load-recaptcha-script="true"
@@ -30,7 +31,7 @@
 
                 <button type="submit" class="btn btn-primary" :disabled="processing">Login</button>
                 <router-link :to="{name: 'register'}" class="ms-3">Don't have an account?</router-link>
-
+                <router-link :to="{name: 'otp.generate'}" class="ms-3">OTP login</router-link>
             </form>
         </div>
     </div>
