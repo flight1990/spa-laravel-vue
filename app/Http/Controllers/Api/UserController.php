@@ -27,7 +27,9 @@ class UserController extends Controller
                             $q->whereNotNull('banned_at');
                             break;
                         case 'online' :
-                            $q->whereHas('tokens');
+                            $q->whereHas('tokens', function ($q) {
+                                $q->where('revoked', 0);
+                            });
                             break;
 
                         case 'offline' :

@@ -71,15 +71,24 @@
             </tbody>
         </table>
     </div>
+
+    <Bootstrap5Pagination v-if="users"
+        :data="users"
+        @pagination-change-page="getUsers"/>
+
 </template>
 
 <script>
 
 import {mapActions, mapGetters} from "vuex";
 import {debounce} from "lodash";
+import { Bootstrap5Pagination } from 'laravel-vue-pagination';
 
 export default {
     name: "Index",
+    components: {
+        Bootstrap5Pagination
+    },
     computed: {
         ...mapGetters({users: "users/users", isLoadingUsers: "users/isLoadingUsers"})
     },
