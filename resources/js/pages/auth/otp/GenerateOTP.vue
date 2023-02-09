@@ -48,7 +48,7 @@ export default {
 
 
             }).catch(({response}) => {
-                if (response.status === 422 || response.status === 401 || response.status === 403) {
+                if (response.status === 422 || response.status === 401 || response.status === 403 || response.status === 404) {
                     this.validationErrors = response.data.errors
                 } else {
                     this.validationErrors = {}

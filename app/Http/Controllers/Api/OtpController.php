@@ -14,6 +14,12 @@ class OtpController extends Controller
     public function generate(OtpRequest $request)
     {
         $user = User::query()->where('phone', $request->phone)->first();
+
+        if (!$user) {
+            return response(['errors' => ['phone' => ['User not found.']]], 404);
+        }
+
+
         $userOtp = UserOtp::where('user_id', $user->id)->latest()->first();
 
         $now = now();
@@ -36,9 +42,9 @@ class OtpController extends Controller
         $now = now();
 
         if (!$userOtp) {
-            return response(['errors' => ['otp' => ['Your OTP is not correct']]], 401);
+            return response(['errors' => ['phone' => ['Your OTP is not correct']]], 401);
         }else if($userOtp && $now->isAfter($userOtp->expire_at)){
-            return response(['errors' => ['otp' => ['Your OTP has been expired']]], 401);
+            return response(['errors' => ['phone' => ['Your OTP has been expired']]], 401);
         }
 
         $user = User::whereId($request->user_id)->first();
@@ -55,6 +61,6 @@ class OtpController extends Controller
             return response(['token' => $token]);
         }
 
-        return response(['errors' => ['otp' => ['Your Otp is not correct']]], 401);
+        return response(['errors' => ['phone' => ['Your Otp is not correct']]], 401);
     }
 }
